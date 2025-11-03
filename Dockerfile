@@ -1,18 +1,20 @@
-# Use official OpenJDK image (Java 22)
+# Use OpenJDK 22 image
 FROM openjdk:22-jdk
 
-# Set working directory inside container
+# Install Maven (since mvnw isn’t in repo)
+RUN apt-get update && apt-get install -y maven
+
+# Set working directory
 WORKDIR /app
 
-# Copy everything from your project folder into container
+# Copy everything
 COPY . .
 
-# Build your Spring Boot project using Maven Wrapper
-RUN ./mvnw clean package -DskipTests
+# Build Spring Boot JAR
+RUN mvn clean package -DskipTests
 
-# Render sets PORT dynamically, use it
-ENV PORT=8080
+# Expose port 8080
 EXPOSE 8080
 
-# Run the Spring Boot JAR (automatically detect jar file)
-CMD ["sh", "-c", "java -jar target/*.jar --server.port=$PORT"]
+# Run the application
+CMD ["java", "-jar", "target/tradeshift-backend-0.0.1-SNAPSHOT.jar"]
