@@ -1,4 +1,3 @@
-
 package com.tradeshift;
 
 import org.springframework.boot.SpringApplication;
